@@ -1,0 +1,17 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "migrations" ("id" integer not null primary key autoincrement, "migration" varchar not null, "batch" integer not null);
+INSERT INTO migrations VALUES(1,'2014_10_12_000000_create_users_table',1);
+INSERT INTO migrations VALUES(2,'2019_08_19_000000_create_failed_jobs_table',1);
+INSERT INTO migrations VALUES(3,'2020_06_29_193057_create_administradors_table',1);
+INSERT INTO migrations VALUES(4,'2020_06_29_193147_create_funcionarios_table',1);
+INSERT INTO migrations VALUES(5,'2020_06_29_193334_create_produtos_table',1);
+CREATE TABLE IF NOT EXISTS "users" ("id" integer not null primary key autoincrement, "name" varchar not null, "email" varchar not null, "email_verified_at" datetime null, "password" varchar not null, "remember_token" varchar null, "created_at" datetime null, "updated_at" datetime null);
+CREATE TABLE IF NOT EXISTS "failed_jobs" ("id" integer not null primary key autoincrement, "connection" text not null, "queue" text not null, "payload" text not null, "exception" text not null, "failed_at" datetime default CURRENT_TIMESTAMP not null);
+CREATE TABLE IF NOT EXISTS "administradors" ("id" integer not null primary key autoincrement, "nm_administrador" varchar not null, "email" varchar not null, "senha" varchar not null, "created_at" datetime null, "updated_at" datetime null);
+CREATE TABLE IF NOT EXISTS "funcionarios" ("id" integer not null primary key autoincrement, "administrador_id" integer not null, "nm_funcionario" varchar not null, "email" varchar not null, "senha" varchar not null, "created_at" datetime null, "updated_at" datetime null, foreign key("administrador_id") references "administradors"("id"));
+CREATE TABLE IF NOT EXISTS "produtos" ("id" integer not null primary key autoincrement, "administrador_id" integer not null, "funcionario_id" integer not null, "nm_produto" varchar not null, "tipo_produto" varchar not null, "dt_cadastro" varchar not null, "qt_itens" varchar not null, "created_at" datetime null, "updated_at" datetime null, foreign key("administrador_id") references "administradors"("id"), foreign key("funcionario_id") references "funcionarios"("id"));
+DELETE FROM sqlite_sequence;
+INSERT INTO sqlite_sequence VALUES('migrations',5);
+CREATE UNIQUE INDEX "users_email_unique" on "users" ("email");
+COMMIT;
